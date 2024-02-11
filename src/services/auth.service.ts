@@ -1,14 +1,5 @@
 import db from "../db";
-
-interface RegisterUser {
-	username: string;
-	password: string;
-	name: string;
-	email: string;
-	phone: string;
-	premiere_user: boolean;
-	admin: boolean;
-}
+import RegisterUser from "../db/schema";
 
 export class AuthService {
 	async register(user: Object) {
@@ -19,8 +10,25 @@ export class AuthService {
 		registerUser.premiere_user = false;
 		registerUser.admin = false;
 
-		db.user.create({ data: registerUser }).then((user) => {
-			console.log(user);
+		// Checking if the user already exists (username, email, phone)
+		const existsUser = await db.user.findFirst({
+			where: {
+				OR: [
+					{ username: registerUser.username },
+					{ email: registerUser.email },
+					{ phone: registerUser.phone },
+				],
+			},
 		});
+
+		if (existsUser) {
+			return false;
+		} else {
+			await db.user.create({ data: registerUser }).then((user) => {
+				console.log(user);
+			});
+
+			return true;
+		}
 	}
 }
