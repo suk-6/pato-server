@@ -9,5 +9,7 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "db"
+      TZ: "Asia/Seoul"
+      PGTZ: "Asia/Seoul"
     volumes:
       - ./db-data:/var/lib/postgresql/data
