@@ -1,11 +1,13 @@
 import { Elysia, t } from "elysia";
 import userRoutes from "./routes/user.routes";
+import oAuthRoutes from "./routes/oauth.routes";
 import swagger from "@elysiajs/swagger";
 
 const app = new Elysia();
 
 app.use(swagger());
 app.use(userRoutes);
+app.use(oAuthRoutes);
 
 app.get(
 	"/",

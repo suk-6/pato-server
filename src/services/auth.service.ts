@@ -31,4 +31,18 @@ export class AuthService {
 			return true;
 		}
 	}
+
+	async checkIsExists(kakaoUID: number) {
+		const existsUser = await db.user.findFirst({
+			where: {
+				kakaoUID: kakaoUID,
+			},
+		});
+
+		if (existsUser) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
