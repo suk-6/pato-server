@@ -5,6 +5,7 @@ export class oAuthService {
 		const token = await this.getKakaoToken(code);
 		const user = await this.getKakaoUserInfo(token);
 
+		if (user.id === undefined) throw new Error("Failed to get user info");
 		return user;
 	}
 

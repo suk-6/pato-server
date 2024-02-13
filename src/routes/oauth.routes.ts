@@ -39,6 +39,7 @@ const oAuthRoutes = new Elysia({ name: "oAuth Routes" }).group(
 
 							return {
 								token: token,
+								now: now.toISOString(),
 								// expire_at: now.toISOString(),
 							};
 						}),
@@ -48,6 +49,7 @@ const oAuthRoutes = new Elysia({ name: "oAuth Routes" }).group(
 					}),
 					response: t.Object({
 						token: t.String(),
+						now: t.String(),
 						// expire_at: t.String(),
 					}),
 					detail: {
