@@ -16,7 +16,7 @@ model User {
   kakaoUID      BigInt // Kakao UID
   name          String
   phone         String
-  sex           Int // men: 0, women: 1
+  gender        Int // men: 0, women: 1
   birthyear     Int
   birthdate     Int
   premiere_user Boolean       @default(false)
