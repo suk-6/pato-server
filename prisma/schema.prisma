@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  uid           Int           @id @default(autoincrement())
-  login_type    Int // 0: tesing, 1: kakao
+  uuid          String        @id
+  login_type    Int           @default(1) // 0: tesing, 1: kakao
   kakaoUID      BigInt // Kakao UID
   name          String
   phone         String
-  gender        Int // male: 0, female: 1
-  birthyear     Int
-  birthdate     Int
+  gender        String
+  birthyear     String
+  birthdate     String
   premiere_user Boolean       @default(false)
   admin         Boolean       @default(false)
   created_at    DateTime      @default(now())
@@ -28,8 +28,8 @@ model User {
 
 model UserProfile {
   pid        Int      @id @default(autoincrement()) // Profile ID
-  uid        Int
-  user       User     @relation(fields: [uid], references: [uid])
+  uuid       String
+  user       User     @relation(fields: [uuid], references: [uuid])
   nickname   String
   image      String
   region     String

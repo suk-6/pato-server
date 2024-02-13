@@ -1,10 +1,9 @@
-import { KakaoTokenModel } from "../models";
+import { KakaoTokenModel, KakaoUserModel } from "../models";
 
 export class oAuthService {
 	async getKakaoUser(code: string) {
 		const token = await this.getKakaoToken(code);
 		const user = await this.getKakaoUserInfo(token);
-		console.log("🚀 ~ oAuthService ~ getKakaoUser ~ user:", user);
 
 		return user;
 	}
@@ -35,6 +34,6 @@ export class oAuthService {
 			},
 		}).then((res) => res.json());
 
-		return user;
+		return user as KakaoUserModel;
 	}
 }

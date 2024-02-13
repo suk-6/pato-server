@@ -1,48 +1,38 @@
 import db from "../db";
-import RegisterUser from "../db/schema";
+import jwt from "@elysiajs/jwt";
+import { RegisterUser, KakaoUserModel } from "../models";
 
 export class AuthService {
-	async register(user: Object) {
-		const registerUser = user as RegisterUser;
-
-		registerUser.password = await Bun.password.hash(registerUser.password);
-
-		registerUser.premiere_user = false;
-		registerUser.admin = false;
-
-		// Checking if the user already exists (username, email, phone)
-		const existsUser = await db.user.findFirst({
-			where: {
-				OR: [
-					{ username: registerUser.username },
-					{ email: registerUser.email },
-					{ phone: registerUser.phone },
-				],
-			},
-		});
-
-		if (existsUser) {
-			return false;
-		} else {
-			await db.user.create({ data: registerUser }).then((user) => {
-				console.log(user);
-			});
-
-			return true;
-		}
-	}
-
-	async checkIsExists(kakaoUID: number) {
-		const existsUser = await db.user.findFirst({
+	async getUuid(kakaoUID: number) {
+		const user = await db.user.findFirst({
 			where: {
 				kakaoUID: kakaoUID,
 			},
 		});
 
-		if (existsUser) {
-			return true;
-		} else {
-			return false;
-		}
+		if (user !== null) return user.uuid;
+		else return false;
 	}
+
+	async register(user: KakaoUserModel) {
+		const registerUser: RegisterUser = {
+			uuid: crypto.randomUUID(),
+			kakaoUID: user.id,
+			name: user.kakao_account.name,
+			phone: user.kakao_account.phone_number,
+			gender: user.kakao_account.gender,
+			birthyear: user.kakao_account.birthyear,
+			birthdate: user.kakao_account.birthday,
+		};
+
+		const uuid = await db.user
+			.create({ data: registerUser })
+			.then((user) => user.uuid);
+
+		return uuid;
+	}
+
+	// async login(uuid: string) {
+	// 	return "test"; // TODO: Implement login with JWT
+	// }
 }
