@@ -1,5 +1,4 @@
 import db from "../db";
-import jwt from "@elysiajs/jwt";
 import { RegisterUser, KakaoUserModel } from "../models";
 
 export class AuthService {
@@ -31,8 +30,4 @@ export class AuthService {
 
 		return uuid;
 	}
-
-	// async login(uuid: string) {
-	// 	return "test"; // TODO: Implement login with JWT
-	// }
 }
