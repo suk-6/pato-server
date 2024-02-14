@@ -30,4 +30,15 @@ export class AuthService {
 
 		return uuid;
 	}
+
+	async getUser(uuid: string) {
+		const user = await db.user.findFirst({
+			where: {
+				uuid: uuid,
+			},
+		});
+
+		if (user === null) throw new Error("User not found");
+		return user;
+	}
 }
