@@ -1,7 +1,6 @@
 import { AuthService } from "../services/auth.service";
 import { oAuthService } from "../services/oauth.service";
 import { QueryModel, KakaoUserModel } from "../models";
-// import { testUser } from "../test";
 
 const authService = new AuthService();
 const oauthService = new oAuthService();
@@ -10,10 +9,6 @@ export class oAuthController {
 	async preLogin(query: QueryModel) {
 		const code = query.code;
 		if (!code) throw new Error("Invalid code");
-		// if (code === "test")
-		// 	return this.login(
-		// 		(await authService.getUuid(testUser.id)) as string
-		// 	);
 
 		const user = await oauthService.getKakaoUser(code);
 		let uuid = await authService.getUuid(user.id);
