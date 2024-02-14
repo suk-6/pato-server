@@ -1,4 +1,5 @@
 import db from "../db";
+import { calculateAge } from "./age.service";
 import { RegisterUser, KakaoUserModel } from "../models";
 
 export class AuthService {
@@ -24,6 +25,12 @@ export class AuthService {
 			birthyear: user.kakao_account.birthyear,
 			birthdate: user.kakao_account.birthday,
 		};
+
+		if (14 <= calculateAge(registerUser.birthyear, registerUser.birthdate))
+			throw new Error("underage");
+
+		if (calculateAge(registerUser.birthyear, registerUser.birthdate) <= 35)
+			throw new Error("overage");
 
 		const uuid = await db.user
 			.create({ data: registerUser })
