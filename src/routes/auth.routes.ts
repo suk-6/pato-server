@@ -21,7 +21,6 @@ const authRoutes = new Elysia({ name: "Auth Routes" }).group("/auth", (app) =>
 						.then(async (payload) => {
 							const token = await jwt.sign(payload);
 							const now = new Date();
-							now.setMonth(now.getMonth() + 3);
 
 							return {
 								token: token,
@@ -39,8 +38,8 @@ const authRoutes = new Elysia({ name: "Auth Routes" }).group("/auth", (app) =>
 					now: t.String(),
 				}),
 				detail: {
-					tags: ["Test", "Auth"],
-					description: "테스트 유저 등록",
+					tags: ["Test"],
+					description: "테스트 유저 등록 및 로그인",
 				},
 			}
 		)

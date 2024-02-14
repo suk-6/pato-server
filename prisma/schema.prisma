@@ -35,8 +35,6 @@ model UserProfile {
   image      String
   region     String
   alcohol    Decimal
-  smoke      Boolean
-  job        String
   hobby      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

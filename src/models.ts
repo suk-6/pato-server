@@ -1,3 +1,4 @@
+// Auth
 // oauth.controller.ts
 export interface QueryModel {
 	code: string;
@@ -13,7 +14,6 @@ export interface KakaoTokenModel {
 	refresh_token_expires_in: number;
 }
 
-// oauth.service.ts
 export interface KakaoUserModel {
 	id: number;
 	connected_at: string;
@@ -50,4 +50,20 @@ export interface RegisterUser {
 	gender: string;
 	birthyear: string;
 	birthdate: string;
+}
+
+// JWT Payload
+export interface JWTPayloadModel {
+	uuid: string;
+}
+
+// Profile
+// profile.routes.ts
+export interface ProfileModel {
+	uuid: string;
+	image: string;
+	nickname: string;
+	region: string;
+	alcohol: number;
+	hobby: string;
 }
