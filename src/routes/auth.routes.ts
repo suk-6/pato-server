@@ -12,12 +12,6 @@ const authRoutes = new Elysia({ name: "Auth Routes" }).group("/auth", (app) =>
 				secret: process.env.JWT_SECRET as string,
 			})
 		)
-		.get("/", () => "Auth Routes", {
-			response: t.String(),
-			detail: {
-				tags: ["Auth"],
-			},
-		})
 		.get(
 			"/test/login",
 			async ({ query, jwt }) => {
@@ -45,7 +39,7 @@ const authRoutes = new Elysia({ name: "Auth Routes" }).group("/auth", (app) =>
 					now: t.String(),
 				}),
 				detail: {
-					tags: ["Auth"],
+					tags: ["Test", "Auth"],
 					description: "테스트 유저 등록",
 				},
 			}

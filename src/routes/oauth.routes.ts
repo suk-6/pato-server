@@ -14,12 +14,6 @@ const oAuthRoutes = new Elysia({ name: "oAuth Routes" }).group(
 					secret: process.env.JWT_SECRET as string,
 				})
 			)
-			.get("/", () => "oAuth Routes", {
-				response: t.String(),
-				detail: {
-					tags: ["Auth"],
-				},
-			})
 			.get("/kakao/get", () => oauthController.getKakaoAuth(), {
 				response: t.String(),
 				detail: {
