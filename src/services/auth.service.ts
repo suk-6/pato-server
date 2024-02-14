@@ -18,6 +18,7 @@ export class AuthService {
 			uuid: crypto.randomUUID(),
 			kakaoUID: user.id,
 			name: user.kakao_account.name,
+			email: user.kakao_account.email,
 			phone: user.kakao_account.phone_number,
 			gender: user.kakao_account.gender,
 			birthyear: user.kakao_account.birthyear,

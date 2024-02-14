@@ -45,6 +45,7 @@ export interface RegisterUser {
 	uuid: string;
 	kakaoUID: number;
 	name: string;
+	email: string;
 	phone: string;
 	gender: string;
 	birthyear: string;

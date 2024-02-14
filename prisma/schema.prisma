@@ -15,6 +15,7 @@ model User {
   login_type    Int           @default(1) // 0: tesing, 1: kakao
   kakaoUID      BigInt // Kakao UID
   name          String
+  email         String
   phone         String
   gender        String
   birthyear     String
