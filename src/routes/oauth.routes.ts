@@ -14,15 +14,15 @@ const oAuthRoutes = new Elysia({ name: "oAuth Routes" }).group(
 					secret: process.env.JWT_SECRET as string,
 				})
 			)
-			.get("/kakao/get", () => oauthController.getKakaoAuth(), {
-				response: t.String(),
-				detail: {
-					tags: ["Auth"],
-					description: "카카오 로그인 인증 URL 반환",
-				},
-			})
+			// .get("/kakao/get", () => oauthController.getKakaoAuth(), {
+			// 	response: t.String(),
+			// 	detail: {
+			// 		tags: ["Auth"],
+			// 		description: "카카오 로그인 인증 URL 반환",
+			// 	},
+			// })
 			.get(
-				"/kakao/callback",
+				"/kakao/login",
 				async ({ query, jwt }) =>
 					await oauthController
 						.preLogin(query)

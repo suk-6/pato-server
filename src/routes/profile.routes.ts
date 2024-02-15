@@ -32,6 +32,9 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 					return profileController.getProfile(uuid);
 				},
 				{
+					headers: t.Object({
+						authorization: t.String(),
+					}),
 					response: t.Object({
 						uuid: t.String(),
 						image: t.String(),
@@ -68,6 +71,9 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 					return profileController.saveProfile(profile);
 				},
 				{
+					headers: t.Object({
+						authorization: t.String(),
+					}),
 					body: t.Object({
 						image: t.String(),
 						nickname: t.String(),

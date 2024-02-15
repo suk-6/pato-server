@@ -26,10 +26,13 @@ export class AuthService {
 			birthdate: user.kakao_account.birthday,
 		};
 
-		if (14 <= calculateAge(registerUser.birthyear, registerUser.birthdate))
+		console.log(
+			calculateAge(registerUser.birthyear, registerUser.birthdate)
+		);
+		if (calculateAge(registerUser.birthyear, registerUser.birthdate) <= 14)
 			throw new Error("underage");
 
-		if (calculateAge(registerUser.birthyear, registerUser.birthdate) <= 35)
+		if (35 <= calculateAge(registerUser.birthyear, registerUser.birthdate))
 			throw new Error("overage");
 
 		const uuid = await db.user
