@@ -14,6 +14,7 @@ COPY package.json .
 COPY bun.lockb .
 
 RUN bun install --production
+RUN bun run prisma:generate
 
 CMD ["bun", "src/index.ts"]
 

@@ -1,20 +1,21 @@
 {
-  "name": "pato-server",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.513.0",
-    "@elysiajs/jwt": "^0.8.0",
-    "@elysiajs/swagger": "^0.8.5",
-    "@prisma/client": "5.9.1",
-    "elysia": "latest"
-  },
-  "devDependencies": {
-    "bun-types": "latest",
-    "prisma": "^5.9.1"
-  },
-  "module": "src/index.js"
+	"name": "pato-server",
+	"version": "1.0.50",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "bun run --watch src/index.ts",
+		"prisma:generate": "bunx prisma generate"
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.513.0",
+		"@elysiajs/jwt": "^0.8.0",
+		"@elysiajs/swagger": "^0.8.5",
+		"@prisma/client": "5.9.1",
+		"elysia": "latest"
+	},
+	"devDependencies": {
+		"bun-types": "latest",
+		"prisma": "^5.9.1"
+	},
+	"module": "src/index.js"
 }
