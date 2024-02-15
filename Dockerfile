@@ -20,7 +20,7 @@ COPY bun.lockb .
 # RUN node_modules/.bin/prisma generate
 # RUN bunx prisma migrate deploy
 
-RUN bun build
+RUN bun run build
 
 CMD ["bun", "start"]
 
