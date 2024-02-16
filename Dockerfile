@@ -14,6 +14,7 @@ COPY node_modules node_modules
 
 COPY package.json .
 COPY bun.lockb .
+COPY start.sh .
 
 RUN apk update
 RUN apk add nodejs
@@ -23,6 +24,6 @@ RUN bun add prisma
 RUN node_modules/.bin/prisma generate
 RUN bun run build
 
-CMD ["bunx", "prisma", "migrate", "deploy", "&&", "bun", "run", "start"]
+CMD ["./start.sh"]
 
 EXPOSE 3000
