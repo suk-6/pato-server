@@ -1,4 +1,4 @@
-FROM oven/bun
+FROM oven/bun:canary-alpine
 
 LABEL maintainer="https://suk.kr"
 
@@ -15,10 +15,13 @@ COPY node_modules node_modules
 COPY package.json .
 COPY bun.lockb .
 
-# RUN bun install --production
-# RUN bun add prisma
-# RUN node_modules/.bin/prisma generate
-# RUN bunx prisma migrate deploy
+RUN apk update
+RUN apk add nodejs
+
+RUN bun install --production
+RUN bun add prisma
+RUN node_modules/.bin/prisma generate
+RUN bunx prisma migrate deploy
 
 RUN bun run build
 
