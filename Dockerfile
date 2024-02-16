@@ -18,10 +18,11 @@ COPY start.sh .
 
 RUN chmod +x start.sh
 
+RUN bun install --production
+
 RUN apt update
 RUN apt install -y nodejs
 
-RUN bun install --production
 RUN bun add prisma
 RUN node_modules/.bin/prisma generate
 # RUN bun run build
