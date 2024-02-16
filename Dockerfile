@@ -1,4 +1,4 @@
-FROM oven/bun:canary-alpine
+FROM oven/bun:slim
 
 LABEL maintainer="https://suk.kr"
 
@@ -10,7 +10,7 @@ COPY src src
 COPY prisma prisma
 COPY tsconfig.json .
 COPY .env .
-COPY node_modules node_modules
+# COPY node_modules node_modules
 
 COPY package.json .
 COPY bun.lockb .
@@ -18,8 +18,8 @@ COPY start.sh .
 
 RUN chmod +x start.sh
 
-RUN apk update
-RUN apk add nodejs
+RUN apt update
+RUN apt install -y nodejs
 
 RUN bun install --production
 RUN bun add prisma
