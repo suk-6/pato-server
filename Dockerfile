@@ -16,6 +16,8 @@ COPY package.json .
 COPY bun.lockb .
 COPY start.sh .
 
+RUN chmod +x start.sh
+
 RUN apk update
 RUN apk add nodejs
 
