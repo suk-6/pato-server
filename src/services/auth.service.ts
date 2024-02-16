@@ -26,9 +26,6 @@ export class AuthService {
 			birthdate: user.kakao_account.birthday,
 		};
 
-		console.log(
-			calculateAge(registerUser.birthyear, registerUser.birthdate)
-		);
 		if (calculateAge(registerUser.birthyear, registerUser.birthdate) <= 14)
 			throw new Error("underage");
 

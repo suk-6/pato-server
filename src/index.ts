@@ -1,8 +1,10 @@
 import { Elysia, t } from "elysia";
+import swagger from "@elysiajs/swagger";
 import authRoutes from "./routes/auth.routes";
 import oAuthRoutes from "./routes/oauth.routes";
 import profileRoutes from "./routes/profile.routes";
-import swagger from "@elysiajs/swagger";
+import matchingRoutes from "./routes/matching.routes";
+import matchingSocketRoutes from "./routes/matching.socket.routes";
 
 const app = new Elysia();
 
@@ -10,6 +12,8 @@ app.use(swagger());
 app.use(authRoutes);
 app.use(oAuthRoutes);
 app.use(profileRoutes);
+app.use(matchingRoutes);
+app.use(matchingSocketRoutes);
 
 app.get(
 	"/",

@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
+import bearer from "@elysiajs/bearer";
 import { AuthController } from "../controllers/auth.controller";
 import { ProfileController } from "../controllers/profile.controller";
 import { JWTPayloadModel, ProfileModel } from "../models";
@@ -17,14 +18,14 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 					secret: process.env.JWT_SECRET as string,
 				})
 			)
+			.use(bearer())
 			.get(
 				"/get",
-				async ({ headers, jwt }) => {
-					const token = headers["authorization"]?.split(" ")[1];
-					if (token === undefined)
+				async ({ jwt, bearer }) => {
+					if (bearer === undefined)
 						throw new Error("Token is not provided");
 
-					const payload = await jwt.verify(token);
+					const payload = await jwt.verify(bearer);
 					const uuid = (payload as unknown as JWTPayloadModel).uuid;
 					if (uuid === undefined)
 						throw new Error("UUID is not provided");
@@ -51,15 +52,14 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 			)
 			.post(
 				"/save",
-				async ({ headers, body, jwt }) => {
+				async ({ bearer, body, jwt }) => {
 					if (30000000 < body.image.length)
 						throw new Error("File size is too big");
 
-					const token = headers["authorization"]?.split(" ")[1];
-					if (token === undefined)
+					if (bearer === undefined)
 						throw new Error("Token is not provided");
 
-					const payload = await jwt.verify(token);
+					const payload = await jwt.verify(bearer);
 					const uuid = (payload as unknown as JWTPayloadModel).uuid;
 					if (uuid === undefined)
 						throw new Error("UUID is not provided");
