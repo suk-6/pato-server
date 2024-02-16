@@ -1,4 +1,4 @@
-FROM oven/bun:slim
+FROM oven/bun:latest
 
 LABEL maintainer="https://suk.kr"
 
@@ -20,6 +20,7 @@ RUN chmod +x start.sh
 
 RUN bun install --production
 
+RUN apt update
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -E -
 RUN apt install -y nodejs
 
