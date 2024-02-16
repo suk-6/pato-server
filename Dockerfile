@@ -23,7 +23,6 @@ RUN bun add prisma
 RUN node_modules/.bin/prisma generate
 RUN bun run build
 
-ENTRYPOINT [ "bunx", "prisma", "migrate", "deploy"]
-CMD ["bun", "run", "start"]
+CMD ["bunx", "prisma", "migrate", "deploy", "&&", "bun", "run", "start"]
 
 EXPOSE 3000
