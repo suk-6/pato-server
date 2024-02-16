@@ -24,6 +24,6 @@ RUN bun add prisma
 RUN node_modules/.bin/prisma generate
 RUN bun run build
 
-CMD ["./start.sh"]
+CMD ["/app/start.sh"]
 
 EXPOSE 3000
