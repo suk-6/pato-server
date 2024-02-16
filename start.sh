@@ -1,4 +1,4 @@
 #!/bin/sh
 
 bunx prisma migrate deploy
-bun run start
+bun run src/index.ts

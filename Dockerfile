@@ -24,7 +24,7 @@ RUN apk add nodejs
 RUN bun install --production
 RUN bun add prisma
 RUN node_modules/.bin/prisma generate
-RUN bun run build
+# RUN bun run build
 
 CMD ["/app/start.sh"]
 
