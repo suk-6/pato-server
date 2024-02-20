@@ -9,9 +9,6 @@ const profileService = new ProfileService();
 
 export class ProfileController {
 	async saveProfile(profile: ProfileModel) {
-		const imageUrl = await imageService.uploadImage(profile.image);
-		profile.image = imageUrl;
-
 		if (await profileService.saveProfile(profile)) return true;
 		return false;
 	}
@@ -20,9 +17,13 @@ export class ProfileController {
 		const profile = await profileService.getUserProfile(uuid);
 		if (profile === null) throw new Error("Profile not found");
 
+		let image;
+		if (profile.image === null) image = undefined;
+		else image = profile.image;
+
 		const result: ProfileModel = {
 			uuid: "rejected",
-			image: profile.image,
+			image: image,
 			nickname: profile.nickname,
 			region: profile.region,
 			alcohol: parseFloat(profile.alcohol.toString()),
@@ -34,5 +35,19 @@ export class ProfileController {
 
 	async checkNickname(nickname: string) {
 		return { status: await profileService.checkNickname(nickname) };
+	}
+
+	async saveImage(uuid: string, image: string) {
+		const imageUrl = await imageService.uploadImage(image);
+		if (imageUrl === null) throw new Error("Image upload failed");
+
+		if (await profileService.updateImage(uuid, imageUrl))
+			return {
+				status: true,
+			};
+
+		return {
+			status: false,
+		};
 	}
 }

@@ -61,7 +61,7 @@ export interface JWTPayloadModel {
 // profile.routes.ts
 export interface ProfileModel {
 	uuid: string;
-	image: string;
+	image: string | undefined;
 	nickname: string;
 	region: string;
 	alcohol: number;
@@ -73,7 +73,6 @@ export interface ProfileModel {
 export interface ChatroomUserModel {
 	crid: number;
 	uuid: string;
-	chatToken: string;
 }
 
 export interface ChatMessageModel {

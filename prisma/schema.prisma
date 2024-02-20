@@ -34,7 +34,7 @@ model UserProfile {
   uuid       String
   user       User     @relation(fields: [uuid], references: [uuid])
   nickname   String
-  image      String
+  image      String?
   region     String
   alcohol    Decimal
   hobby      String

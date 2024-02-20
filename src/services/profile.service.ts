@@ -23,6 +23,27 @@ export class ProfileService {
 		});
 	}
 
+	async updateImage(uuid: string, image: string) {
+		const isExist = await db.userProfile.findFirst({
+			where: {
+				uuid: uuid,
+			},
+		});
+
+		if (isExist) {
+			return await db.userProfile.update({
+				where: {
+					pid: isExist.pid,
+				},
+				data: {
+					image: image,
+				},
+			});
+		}
+
+		return false;
+	}
+
 	async getUserProfile(uuid: string) {
 		return await db.userProfile.findFirst({
 			where: {
