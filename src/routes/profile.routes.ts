@@ -59,7 +59,9 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 					body: t.Object({
 						nickname: t.String(),
 					}),
-					response: t.Boolean(),
+					response: t.Object({
+						status: t.Boolean(),
+					}),
 					detail: {
 						tags: ["Profile"],
 						description: "닉네임 중복 확인",

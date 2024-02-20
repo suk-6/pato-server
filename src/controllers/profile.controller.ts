@@ -33,6 +33,6 @@ export class ProfileController {
 	}
 
 	async checkNickname(nickname: string) {
-		return await profileService.checkNickname(nickname);
+		return { status: await profileService.checkNickname(nickname) };
 	}
 }
