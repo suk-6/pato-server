@@ -1,9 +1,7 @@
-import { AuthController } from "./auth.controller";
 import { ProfileModel } from "../models";
 import { ImageService } from "../services/image.service";
 import { ProfileService } from "../services/profile.service";
 
-const authController = new AuthController();
 const imageService = new ImageService();
 const profileService = new ProfileService();
 
