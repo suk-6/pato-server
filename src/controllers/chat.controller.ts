@@ -5,38 +5,35 @@ const chatService = new ChatService();
 
 export class ChatController {
 	async createChat(uuid1: string, uuid2: string) {
-		const chatTokens = [crypto.randomUUID(), crypto.randomUUID()];
-		await chatService.createChatroom(chatTokens, uuid1, uuid2);
-
-		return chatTokens;
+		await chatService.createChatroom(uuid1, uuid2);
 	}
 
-	async joinChat(chatToken: string) {
-		return await chatService.joinChat(chatToken);
+	async joinChat(uuid: string) {
+		return await chatService.joinChat(uuid);
 	}
 
-	async getChatroomID(chatToken: string) {
-		const chatroomUser = await chatService.getChatroomUser(chatToken);
+	async getChatroomID(uuid: string) {
+		const chatroomUser = await chatService.getChatroomUser(uuid);
 		if (chatroomUser === null) throw new Error("Chatroom not found");
 
 		return chatroomUser.crid;
 	}
 
-	async leaveChat(chatToken: string) {
-		const chatroomUser = await chatService.getChatroomUser(chatToken);
+	async leaveChat(uuid: string) {
+		const chatroomUser = await chatService.getChatroomUser(uuid);
 		if (chatroomUser === null) throw new Error("Chatroom not found");
 
-		chatService.leaveChat(chatToken);
+		chatService.leaveChat(uuid);
 
 		return chatroomUser.crid;
 	}
 
-	async sendMessage(chatroomID: number, chatToken: string, message: string) {
+	async sendMessage(chatroomID: number, senderUuid: string, message: string) {
 		const chatroom = await chatService.getChatroom(chatroomID);
 		if (chatroom === null)
 			return { status: false, message: "Chatroom not found" };
 
-		const chatroomUser = await chatService.getChatroomUser(chatToken);
+		const chatroomUser = await chatService.getChatroomUser(senderUuid);
 		if (chatroomUser === null)
 			return { status: false, message: "Chatroom user not found" };
 

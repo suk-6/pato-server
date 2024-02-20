@@ -2,7 +2,7 @@ import db from "../db";
 import { ChatroomUserModel, ChatMessageModel } from "../models";
 
 export class ChatService {
-	async createChatroom(chatTokens: string[], uuid1: string, uuid2: string) {
+	async createChatroom(uuid1: string, uuid2: string) {
 		const chatroom = await db.chatroom.create({
 			data: {},
 		});
@@ -11,12 +11,10 @@ export class ChatService {
 		const participant1: ChatroomUserModel = {
 			crid: chatroomID,
 			uuid: uuid1,
-			chatToken: chatTokens[0],
 		};
 		const participant2: ChatroomUserModel = {
 			crid: chatroomID,
 			uuid: uuid2,
-			chatToken: chatTokens[1],
 		};
 
 		try {
@@ -33,8 +31,8 @@ export class ChatService {
 		}
 	}
 
-	async joinChat(chatToken: string) {
-		const chatroomUser = await this.getChatroomUser(chatToken);
+	async joinChat(uuid: string) {
+		const chatroomUser = await this.getChatroomUser(uuid);
 		const chatroom = await this.getChatroom(chatroomUser.crid);
 		const chatroomStatus = chatroom.status;
 
@@ -53,8 +51,8 @@ export class ChatService {
 		return { status: true, crid: chatroomUser.crid };
 	}
 
-	async leaveChat(chatToken: string) {
-		const chatroomUser = await this.getChatroomUser(chatToken);
+	async leaveChat(uuid: string) {
+		const chatroomUser = await this.getChatroomUser(uuid);
 		this.changeChatroomStatus(chatroomUser.crid, 3);
 
 		return chatroomUser.crid;
@@ -82,10 +80,13 @@ export class ChatService {
 		return chatroom;
 	}
 
-	async getChatroomUser(chatToken: string) {
+	async getChatroomUser(uuid: string) {
 		const chatroomUser = await db.chatroomUser.findFirst({
 			where: {
-				chatToken: chatToken,
+				uuid: uuid,
+			},
+			orderBy: {
+				cuid: "desc",
 			},
 		});
 		if (chatroomUser === null) throw new Error("Chatroom not found");

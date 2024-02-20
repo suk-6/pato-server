@@ -15,7 +15,7 @@ export class AuthController {
 			uuid: crypto.randomUUID(),
 			login_type: 0,
 			kakaoUID: 0,
-			name: "테스트",
+			name: "테스트1",
 			email: "test@test.com",
 			phone: "+82 10-0000-0000",
 			gender: "male",

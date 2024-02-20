@@ -55,7 +55,6 @@ model ChatroomUser {
   cuid       Int      @id @default(autoincrement()) // Chatroom User ID
   crid       Int
   uuid       String
-  chatToken  String
   Chatroom   Chatroom @relation(fields: [crid], references: [crid])
   user       User     @relation(fields: [uuid], references: [uuid])
   created_at DateTime @default(now())

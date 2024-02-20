@@ -18,58 +18,43 @@ const chatSocketRoutes = new Elysia({
 		})
 	)
 	.ws("/chat", {
-		async message(ws, { type, chatToken, data }) {
+		async open(ws) {
 			const userToken = ws.data.headers.authorization?.split(" ")[1];
 			if (userToken === undefined) {
 				ws.send({ status: false, message: "Token is not provided" });
 				ws.close();
 			}
 			const payload = await ws.data.jwt.verify(userToken);
-			const uuid = (payload as unknown as JWTPayloadModel).uuid;
+			ws.id = (payload as unknown as JWTPayloadModel).uuid;
 
-			if (type === "connect") {
-				const result = await chatController.joinChat(chatToken);
-				if (result.status === false) {
-					ws.send(result);
-				} else if (result.crid !== undefined) {
-					ws.subscribe(result.crid.toString());
-				} else {
-					ws.send(result);
-					ws.close();
-				}
-			} else if (type === "chat") {
-				if (data === undefined) {
-					ws.send({ status: false, message: "Data is not provided" });
-					ws.close();
-				} else {
-					const chatroomID = await chatController.getChatroomID(
-						chatToken
-					);
-					const result = chatController.sendMessage(
-						chatroomID,
-						chatToken,
-						data
-					);
-					ws.publish(chatroomID.toString(), result);
-				}
-			} else if (type === "disconnect") {
-				const chatroomID = await chatController.leaveChat(chatToken);
-				ws.unsubscribe(chatroomID.toString());
+			const result = await chatController.joinChat(ws.id);
+			if (result.crid !== undefined) {
+				ws.subscribe(result.crid.toString());
+			} else {
+				ws.send(result);
 				ws.close();
+			}
+		},
+		async message(ws, { type, data }) {
+			if (type === "chat") {
+				const chatroomID = await chatController.getChatroomID(ws.id);
+				const result = await chatController.sendMessage(
+					chatroomID,
+					ws.id,
+					data
+				);
+				ws.publish(chatroomID.toString(), result);
+				if (result.status === false) ws.send(result);
 			} else return { status: false, message: "Type is not provided" };
 		},
-		// async close(ws) {
-		// 	const chatToken = ws.chatToken;
-		// 	if (chatToken !== undefined) {
-		// 		const chatroomID = await chatController.leaveChat(chatToken);
-		// 		ws.unsubscribe(chatroomID.toString());
-		// 	}
-		// },
+		async close(ws) {
+			const chatroomID = await chatController.leaveChat(ws.id);
+			ws.unsubscribe(chatroomID.toString());
+		},
 
 		body: t.Object({
 			type: t.String(),
-			chatToken: t.String(),
-			data: t.Optional(t.String()),
+			data: t.String(),
 		}),
 	});
 

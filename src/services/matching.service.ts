@@ -20,28 +20,23 @@ export class MatchingService {
 
 			return {
 				status: "waiting",
-				matchingID: await this.generateMatchingID(uuid),
 			};
 		} else {
-			// if (await this.existUser(region, uuid))
-			// 	throw new Error("User already exists");
+			if (await this.existUser(region, uuid))
+				throw new Error("User already exists");
 
 			const matchedUuid = await this.popUser(region);
 			if (matchedUuid === null) throw new Error("Matching error");
 
-			const chatToken = await this.endMatching(uuid, matchedUuid);
+			await this.endMatching(uuid, matchedUuid);
 
-			return { status: "matched", chatID: chatToken };
+			return { status: "matched" };
 		}
 	}
 
 	async endMatching(uuid: string, matchedUuid: string) {
-		const matchingID = await this.getMatchingID(matchedUuid);
-		const chatTokens = await chatController.createChat(uuid, matchedUuid);
-
-		this.endWaiting(matchingID, chatTokens[1]);
-
-		return chatTokens[0];
+		await chatController.createChat(uuid, matchedUuid);
+		this.endWaiting(matchedUuid);
 	}
 
 	async existUser(region: string, uuid: string) {
@@ -62,40 +57,39 @@ export class MatchingService {
 		return await redis.lpop(key);
 	}
 
-	async generateMatchingID(uuid: string) {
-		const matchingID = crypto.randomUUID();
-		const key = `waitingUser:${uuid}`;
-		await redis.set(key, matchingID);
-
-		return matchingID;
-	}
-
-	async getMatchingID(uuid: string) {
-		const key = `waitingUser:${uuid}`;
-		const matchingID = await redis.get(key);
-		if (matchingID === null) throw new Error("Matching ID not found");
-
-		redis.del(key);
-		return matchingID;
-	}
-
-	async waitingSocket(matchingID: string) {
-		const key = `isMatched:${matchingID}`;
+	async waitingSocket(uuid: string) {
+		const key = `isMatched:${uuid}`;
 		while (true) {
 			if (await redis.exists(key)) break;
 			await new Promise((r) => setTimeout(r, 2000));
 		}
-
-		const chatToken = await redis.get(key);
-		if (chatToken === null) throw new Error("Chat ID not found");
 		redis.del(key);
 
-		return chatToken;
+		return { status: true };
 	}
 
-	async endWaiting(matchingID: string, chatToken: string) {
-		const key = `isMatched:${matchingID}`;
-		if ((await redis.set(key, chatToken)) === "OK") return true;
-		else return false;
+	async endWaiting(uuid: string) {
+		const key = `isMatched:${uuid}`;
+		redis.set(key, 1);
+	}
+
+	async cancelMatching(uuid: string) {
+		const profile = await profileService.getUserProfile(uuid);
+		if (profile === null)
+			return { status: false, message: "Profile not found" };
+
+		let region = profile.region;
+		if (region === undefined)
+			return { status: false, message: "Region is not provided" };
+		region = base64encode(region);
+
+		return await this.removeUser(region, uuid);
+	}
+
+	async removeUser(region: string, uuid: string) {
+		const key = `waitingRegion:${region}`;
+		await redis.lrem(key, 0, uuid);
+
+		return { status: true };
 	}
 }
