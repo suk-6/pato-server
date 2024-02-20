@@ -31,4 +31,8 @@ export class ProfileController {
 
 		return result;
 	}
+
+	async checkNickname(nickname: string) {
+		return await profileService.checkNickname(nickname);
+	}
 }

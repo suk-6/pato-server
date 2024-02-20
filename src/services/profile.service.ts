@@ -30,4 +30,15 @@ export class ProfileService {
 			},
 		});
 	}
+
+	async checkNickname(nickname: string) {
+		const isExist = await db.userProfile.findFirst({
+			where: {
+				nickname: nickname,
+			},
+		});
+
+		if (isExist) return true;
+		return false;
+	}
 }

@@ -51,6 +51,22 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 				}
 			)
 			.post(
+				"/check-nickname",
+				async ({ body }) => {
+					return profileController.checkNickname(body.nickname);
+				},
+				{
+					body: t.Object({
+						nickname: t.String(),
+					}),
+					response: t.Boolean(),
+					detail: {
+						tags: ["Profile"],
+						description: "닉네임 중복 확인",
+					},
+				}
+			)
+			.post(
 				"/save",
 				async ({ bearer, body, jwt }) => {
 					if (30000000 < body.image.length)
