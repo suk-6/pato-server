@@ -29,19 +29,19 @@ export class MatchingService {
 			const matchedUuid = await this.popUser(region);
 			if (matchedUuid === null) throw new Error("Matching error");
 
-			const chatID = await this.endMatching(uuid, matchedUuid);
+			const chatToken = await this.endMatching(uuid, matchedUuid);
 
-			return { status: "matched", chatID: chatID };
+			return { status: "matched", chatID: chatToken };
 		}
 	}
 
 	async endMatching(uuid: string, matchedUuid: string) {
 		const matchingID = await this.getMatchingID(matchedUuid);
-		const chatID = await chatController.createChat(uuid, matchedUuid);
+		const chatTokens = await chatController.createChat(uuid, matchedUuid);
 
-		this.endWaiting(matchingID, chatID);
+		this.endWaiting(matchingID, chatTokens[1]);
 
-		return chatID;
+		return chatTokens[0];
 	}
 
 	async existUser(region: string, uuid: string) {
@@ -86,14 +86,14 @@ export class MatchingService {
 			await new Promise((r) => setTimeout(r, 2000));
 		}
 
-		const chatID = await redis.get(key);
-		if (chatID === null) throw new Error("Chat ID not found");
-		return chatID;
+		const chatToken = await redis.get(key);
+		if (chatToken === null) throw new Error("Chat ID not found");
+		return chatToken;
 	}
 
-	async endWaiting(matchingID: string, chatID: string) {
+	async endWaiting(matchingID: string, chatToken: string) {
 		const key = `isMatched:${matchingID}`;
-		if ((await redis.set(key, chatID)) === "OK") return true;
+		if ((await redis.set(key, chatToken)) === "OK") return true;
 		else return false;
 	}
 }

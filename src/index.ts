@@ -5,6 +5,7 @@ import oAuthRoutes from "./routes/oauth.routes";
 import profileRoutes from "./routes/profile.routes";
 import matchingRoutes from "./routes/matching.routes";
 import matchingSocketRoutes from "./routes/matching.socket.routes";
+import chatSocketRoutes from "./routes/chat.socket.routes";
 
 const app = new Elysia();
 
@@ -14,6 +15,7 @@ app.use(oAuthRoutes);
 app.use(profileRoutes);
 app.use(matchingRoutes);
 app.use(matchingSocketRoutes);
+app.use(chatSocketRoutes);
 
 app.get(
 	"/",
