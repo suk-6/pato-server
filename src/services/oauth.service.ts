@@ -1,8 +1,8 @@
 import { KakaoTokenModel, KakaoUserModel } from "../models";
 
 export class oAuthService {
-	async getKakaoUser(code: string) {
-		const token = await this.getKakaoToken(code);
+	async getKakaoUser(token: string) {
+		// const token = await this.getKakaoToken(code);
 		const user = await this.getKakaoUserInfo(token);
 
 		if (user.id === undefined) throw new Error("Failed to get user info");
@@ -28,10 +28,10 @@ export class oAuthService {
 		return token as KakaoTokenModel;
 	}
 
-	async getKakaoUserInfo(token: KakaoTokenModel) {
+	async getKakaoUserInfo(accessToken: string) {
 		const user = await fetch(process.env.KAKAO_USERINFO_URL as string, {
 			headers: {
-				Authorization: `Bearer ${token.access_token}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		}).then((res) => res.json());
 
