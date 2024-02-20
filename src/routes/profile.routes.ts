@@ -95,7 +95,9 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 						alcohol: t.Number(),
 						hobby: t.String(),
 					}),
-					response: t.Boolean(),
+					response: t.Object({
+						status: t.Boolean(),
+					}),
 					detail: {
 						tags: ["Profile"],
 						description: "프로필 저장",

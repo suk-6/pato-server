@@ -1,5 +1,6 @@
 import db from "../db";
 import { ProfileModel } from "../models";
+import { regions } from "../regions";
 
 export class ProfileService {
 	async saveProfile(profile: ProfileModel) {
@@ -60,6 +61,18 @@ export class ProfileService {
 		});
 
 		if (isExist) return true;
+		return false;
+	}
+
+	async validateRegion(region: string) {
+		const sido: string = region.split(" ")[0];
+		const sigun: string = region.split(" ")[1];
+
+		if (Object.keys(regions).includes(sido)) {
+			if (regions[sido as keyof typeof regions].includes(sigun))
+				return true;
+		}
+
 		return false;
 	}
 }
