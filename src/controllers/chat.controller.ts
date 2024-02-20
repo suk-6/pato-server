@@ -9,4 +9,24 @@ export class ChatController {
 
 		return chatTokens;
 	}
+
+	async joinChat(chatToken: string) {
+		return await chatService.joinChat(chatToken);
+	}
+
+	async getChatroomID(chatToken: string) {
+		const chatroomUser = await chatService.getChatroomUser(chatToken);
+		if (chatroomUser === null) throw new Error("Chatroom not found");
+
+		return chatroomUser.crid;
+	}
+
+	async leaveChat(chatToken: string) {
+		const chatroomUser = await chatService.getChatroomUser(chatToken);
+		if (chatroomUser === null) throw new Error("Chatroom not found");
+
+		chatService.leaveChat(chatToken);
+
+		return chatroomUser.crid;
+	}
 }

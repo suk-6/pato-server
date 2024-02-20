@@ -67,3 +67,11 @@ export interface ProfileModel {
 	alcohol: number;
 	hobby: string;
 }
+
+// Chat
+// chat.service.ts
+export interface ChatroomUserModel {
+	crid: number;
+	uuid: string;
+	chatToken: string;
+}

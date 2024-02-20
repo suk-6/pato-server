@@ -23,8 +23,8 @@ export class MatchingService {
 				matchingID: await this.generateMatchingID(uuid),
 			};
 		} else {
-			if (await this.existUser(region, uuid))
-				throw new Error("User already exists");
+			// if (await this.existUser(region, uuid))
+			// 	throw new Error("User already exists");
 
 			const matchedUuid = await this.popUser(region);
 			if (matchedUuid === null) throw new Error("Matching error");

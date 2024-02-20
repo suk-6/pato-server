@@ -11,8 +11,8 @@ datasource db {
 }
 
 model User {
-  uuid          String        @id
-  login_type    Int           @default(1) // 0: tesing, 1: kakao
+  uuid          String         @id
+  login_type    Int            @default(1) // 0: tesing, 1: kakao
   kakaoUID      BigInt // Kakao UID
   name          String
   email         String
@@ -20,11 +20,13 @@ model User {
   gender        String
   birthyear     String
   birthdate     String
-  premiere_user Boolean       @default(false)
-  admin         Boolean       @default(false)
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
+  premiere_user Boolean        @default(false)
+  admin         Boolean        @default(false)
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
   UserProfile   UserProfile[]
+  ChatroomUser  ChatroomUser[]
+  Chat          Chat[]
 }
 
 model UserProfile {
@@ -38,4 +40,39 @@ model UserProfile {
   hobby      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model Chatroom {
+  crid         Int            @id @default(autoincrement()) // Chatroom ID
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  ChatroomUser ChatroomUser[]
+  Chat         Chat[]
+}
+
+model ChatroomUser {
+  cuid       Int      @id @default(autoincrement()) // Chatroom User ID
+  crid       Int
+  uuid       String
+  chatToken  String
+  status     Int      @default(0) // 0: not joined, 1: joined, 2: exited
+  Chatroom   Chatroom @relation(fields: [crid], references: [crid])
+  user       User     @relation(fields: [uuid], references: [uuid])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Chat       Chat[]
+}
+
+model Chat {
+  cid          Int          @id @default(autoincrement()) // Chat ID
+  crid         Int
+  cuid         Int
+  uuid         String
+  Chatroom     Chatroom     @relation(fields: [crid], references: [crid])
+  Chatroomuser ChatroomUser @relation(fields: [cuid], references: [cuid])
+  user         User         @relation(fields: [uuid], references: [uuid])
+  message      String
+  type         Int          @default(0) // 0: text, 1: image
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
 }
