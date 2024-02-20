@@ -1,5 +1,5 @@
 import db from "../db";
-import { ChatroomUserModel } from "../models";
+import { ChatroomUserModel, ChatMessageModel } from "../models";
 
 export class ChatService {
 	async createChatroom(chatTokens: string[], uuid1: string, uuid2: string) {
@@ -34,52 +34,70 @@ export class ChatService {
 	}
 
 	async joinChat(chatToken: string) {
-		const chatroomUser = await db.chatroomUser.findFirst({
-			where: {
-				chatToken: chatToken,
-			},
-		});
+		const chatroomUser = await this.getChatroomUser(chatToken);
+		const chatroom = await this.getChatroom(chatroomUser.crid);
+		const chatroomStatus = chatroom.status;
 
-		if (chatroomUser === null) throw new Error("Chatroom not found");
+		if (chatroomStatus === 0) {
+			await this.changeChatroomStatus(chatroomUser.crid, 1);
+		} else if (chatroomStatus === 1) {
+			await this.changeChatroomStatus(chatroomUser.crid, 2);
+		} else if (chatroomStatus === 2) {
+			return { status: false, message: "Chatroom is full" };
+		} else if (chatroomStatus === 3) {
+			return { status: false, message: "Chatroom is closed" };
+		} else {
+			return { status: false, message: "Chatroom is not available" };
+		}
 
-		db.chatroomUser.update({
-			where: {
-				cuid: chatroomUser.cuid,
-			},
-			data: {
-				status: 1,
-			},
-		});
-
-		return chatroomUser.crid;
-	}
-
-	async getChatroomUser(chatToken: string) {
-		return await db.chatroomUser.findFirst({
-			where: {
-				chatToken: chatToken,
-			},
-		});
+		return { status: true, crid: chatroomUser.crid };
 	}
 
 	async leaveChat(chatToken: string) {
+		const chatroomUser = await this.getChatroomUser(chatToken);
+		this.changeChatroomStatus(chatroomUser.crid, 3);
+
+		return chatroomUser.crid;
+	}
+
+	async changeChatroomStatus(chatroomID: number, status: number) {
+		await db.chatroom.update({
+			where: {
+				crid: chatroomID,
+			},
+			data: {
+				status: status,
+			},
+		});
+	}
+
+	async getChatroom(chatroomID: number) {
+		const chatroom = await db.chatroom.findFirst({
+			where: {
+				crid: chatroomID,
+			},
+		});
+		if (chatroom === null) throw new Error("Chatroom not found");
+
+		return chatroom;
+	}
+
+	async getChatroomUser(chatToken: string) {
 		const chatroomUser = await db.chatroomUser.findFirst({
 			where: {
 				chatToken: chatToken,
 			},
 		});
-
 		if (chatroomUser === null) throw new Error("Chatroom not found");
 
-		db.chatroomUser.update({
-			where: {
-				cuid: chatroomUser.cuid,
-			},
-			data: {
-				status: 2,
-			},
+		return chatroomUser;
+	}
+
+	async sendMessage(chatMessage: ChatMessageModel) {
+		await db.chat.create({
+			data: chatMessage,
 		});
 
-		return chatroomUser.crid;
+		return { status: true, type: "recivedChat", data: chatMessage.message };
 	}
 }

@@ -44,6 +44,7 @@ model UserProfile {
 
 model Chatroom {
   crid         Int            @id @default(autoincrement()) // Chatroom ID
+  status       Int            @default(0) // 0: chat waiting, 1: user1 joined, 2: user2 joined, 3: chat end
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
   ChatroomUser ChatroomUser[]
@@ -55,7 +56,6 @@ model ChatroomUser {
   crid       Int
   uuid       String
   chatToken  String
-  status     Int      @default(0) // 0: not joined, 1: joined, 2: exited
   Chatroom   Chatroom @relation(fields: [crid], references: [crid])
   user       User     @relation(fields: [uuid], references: [uuid])
   created_at DateTime @default(now())

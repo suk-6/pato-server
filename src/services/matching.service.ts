@@ -88,6 +88,8 @@ export class MatchingService {
 
 		const chatToken = await redis.get(key);
 		if (chatToken === null) throw new Error("Chat ID not found");
+		redis.del(key);
+
 		return chatToken;
 	}
 

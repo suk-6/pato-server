@@ -75,3 +75,10 @@ export interface ChatroomUserModel {
 	uuid: string;
 	chatToken: string;
 }
+
+export interface ChatMessageModel {
+	crid: number;
+	cuid: number;
+	uuid: string;
+	message: string;
+}
