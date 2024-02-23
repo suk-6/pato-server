@@ -7,7 +7,7 @@ const profileService = new ProfileService();
 
 export class ProfileController {
 	async saveProfile(profile: ProfileModel) {
-		if ((await this.validateRegion(profile.region)) === false)
+		if (!(await this.validateRegion(profile.region)))
 			throw new Error("Invalid region");
 		if (await profileService.saveProfile(profile))
 			return {
