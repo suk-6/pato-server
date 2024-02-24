@@ -68,6 +68,7 @@ export class ProfileService {
 		const sido: string = region.split(" ")[0];
 		const sigun: string = region.split(" ")[1];
 
+		console.log(regions);
 		console.log(regions[sido]);
 		console.log(typeof regions[sido]);
 		console.log(regions[sido].includes(sigun));
