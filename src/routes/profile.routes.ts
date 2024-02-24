@@ -122,6 +122,9 @@ const profileRoutes = new Elysia({ name: "Profile Routes" }).group(
 					return await profileController.saveImage(uuid, body.image);
 				},
 				{
+					headers: t.Object({
+						authorization: t.String(),
+					}),
 					body: t.Object({
 						image: t.String(),
 					}),
