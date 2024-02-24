@@ -65,11 +65,14 @@ export class ProfileService {
 	}
 
 	async validateRegion(region: string) {
-		console.log("🚀 ~ ProfileService ~ validateRegion ~ region:", region);
 		const sido: string = region.split(" ")[0];
-		console.log("🚀 ~ ProfileService ~ validateRegion ~ sido:", sido);
 		const sigun: string = region.split(" ")[1];
-		console.log("🚀 ~ ProfileService ~ validateRegion ~ sigun:", sigun);
+
+		console.log(
+			region.split(" ").length === 2,
+			Object.keys(regions).includes(sido),
+			regions[sido as keyof typeof regions].includes(sigun)
+		);
 
 		if (region.split(" ").length === 2)
 			if (Object.keys(regions).includes(sido))
