@@ -68,16 +68,12 @@ export class ProfileService {
 		const sido: string = region.split(" ")[0];
 		const sigun: string = region.split(" ")[1];
 
-		console.log(
-			region.split(" ").length === 2,
-			Object.keys(regions).includes(sido),
-			regions[sido as keyof typeof regions].includes(sigun)
-		);
-
 		if (region.split(" ").length === 2)
-			if (Object.keys(regions).includes(sido))
-				if (regions[sido as keyof typeof regions].includes(sigun))
-					return true;
+			for (const key in regions) {
+				if (key == sido) {
+					if (regions[key].includes(sigun)) return true;
+				}
+			}
 
 		return false;
 	}

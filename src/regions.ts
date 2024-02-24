@@ -1,4 +1,4 @@
-export const regions = {
+export const regions: { [key: string]: string[] } = {
 	서울특별시: [
 		"종로구",
 		"중구",
