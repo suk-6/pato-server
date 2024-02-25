@@ -29,6 +29,7 @@ const matchingSocketRoutes = new Elysia({
 
 			ws.id = (payload as unknown as JWTPayloadModel).uuid;
 			ws.send(await matchingController.waitingSocket(ws.id));
+			ws.close();
 		},
 		async close(ws) {
 			matchingController.cancelMatching(ws.id);
