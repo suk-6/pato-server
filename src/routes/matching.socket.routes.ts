@@ -25,6 +25,8 @@ const matchingSocketRoutes = new Elysia({
 				ws.close();
 			}
 			const payload = await ws.data.jwt.verify(userToken);
+			if (payload === undefined) throw new Error("UUID is not provided");
+
 			ws.id = (payload as unknown as JWTPayloadModel).uuid;
 			ws.send(await matchingController.waitingSocket(ws.id));
 		},

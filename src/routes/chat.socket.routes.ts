@@ -25,6 +25,8 @@ const chatSocketRoutes = new Elysia({
 				ws.close();
 			}
 			const payload = await ws.data.jwt.verify(userToken);
+			if (payload === undefined) throw new Error("UUID is not provided");
+
 			ws.id = (payload as unknown as JWTPayloadModel).uuid;
 
 			const result = await chatController.joinChat(ws.id);
