@@ -51,6 +51,10 @@ const chatSocketRoutes = new Elysia({
 		},
 		async close(ws) {
 			const chatroomID = await chatController.leaveChat(ws.id);
+			ws.publish(chatroomID.toString(), {
+				status: false,
+				message: "Chatroom is closed",
+			});
 			ws.unsubscribe(chatroomID.toString());
 		},
 
