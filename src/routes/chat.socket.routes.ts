@@ -47,7 +47,7 @@ const chatSocketRoutes = new Elysia({
 				);
 				if (result.status === false) ws.send(result);
 				else ws.publish(chatroomID.toString(), result);
-			} else return { status: false, message: "Type is not provided" };
+			} else ws.send({ status: false, message: "Type is not provided" });
 		},
 		async close(ws) {
 			const chatroomID = await chatController.leaveChat(ws.id);
