@@ -95,10 +95,15 @@ export class ChatService {
 	}
 
 	async sendMessage(chatMessage: ChatMessageModel) {
-		await db.chat.create({
+		const result = await db.chat.create({
 			data: chatMessage,
 		});
 
-		return { status: true, type: "recivedChat", data: chatMessage.message };
+		return {
+			status: true,
+			type: "recivedChat",
+			data: result.message,
+			time: result.created_at.toISOString(),
+		};
 	}
 }
