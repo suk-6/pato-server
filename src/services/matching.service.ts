@@ -13,16 +13,16 @@ export class MatchingService {
 		const profile = await profileService.getUserProfile(uuid);
 		if (profile === null) throw new Error("Profile not found");
 
-		authController.adminCheck(uuid).then((isAdmin) => {
-			if (isAdmin) console.log(profile);
-		});
-
 		let region = profile.region;
 		if (region === undefined) throw new Error("Region is not provided");
 		region = base64encode(region);
 
 		if (!(await redis.exists(`waitingRegion:${region}`))) {
-			await this.appendUser(region, uuid);
+			const result = await this.appendUser(region, uuid);
+
+			authController.adminCheck(uuid).then((isAdmin) => {
+				if (isAdmin) console.log(profile, result);
+			});
 
 			return {
 				status: "waiting",
@@ -54,8 +54,8 @@ export class MatchingService {
 
 	async appendUser(region: string, uuid: string, isFront: boolean = false) {
 		const key = `waitingRegion:${region}`;
-		if (isFront) await redis.lpush(key, uuid);
-		else await redis.rpush(key, uuid);
+		if (isFront) return redis.lpush(key, uuid);
+		else return redis.rpush(key, uuid);
 	}
 
 	async popUser(region: string) {
