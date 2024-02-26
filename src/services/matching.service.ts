@@ -2,14 +2,20 @@ import { ProfileService } from "./profile.service";
 import { redis } from "../redis";
 import { base64encode } from "../base64";
 import { ChatController } from "../controllers/chat.controller";
+import { AuthController } from "../controllers/auth.controller";
 
 const profileService = new ProfileService();
 const chatController = new ChatController();
+const authController = new AuthController();
 
 export class MatchingService {
 	async startMatching(uuid: string) {
 		const profile = await profileService.getUserProfile(uuid);
 		if (profile === null) throw new Error("Profile not found");
+
+		authController.adminCheck(uuid).then((isAdmin) => {
+			if (isAdmin) console.log(profile);
+		});
 
 		let region = profile.region;
 		if (region === undefined) throw new Error("Region is not provided");

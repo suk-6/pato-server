@@ -49,4 +49,10 @@ export class AuthService {
 		if (user === null) throw new Error("User not found");
 		return user;
 	}
+
+	async adminCheck(uuid: string) {
+		const user = await this.getUser(uuid);
+		if (user === null) throw new Error("User not found");
+		return user.admin;
+	}
 }

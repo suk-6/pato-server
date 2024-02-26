@@ -45,4 +45,8 @@ export class AuthController {
 		if (uuid === undefined) throw new Error("Failed to register user");
 		return oauthController.login(uuid);
 	}
+
+	async adminCheck(uuid: string) {
+		return await authService.adminCheck(uuid);
+	}
 }
