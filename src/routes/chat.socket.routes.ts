@@ -39,7 +39,7 @@ const chatSocketRoutes = new Elysia({
 				);
 				ws.send({
 					status: true,
-					type: "chat",
+					type: "information",
 					data: "Chatroom is opened",
 					opponent: opponent,
 				});
