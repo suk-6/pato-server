@@ -1,5 +1,8 @@
 import db from "../db";
+import { ProfileController } from "../controllers/profile.controller";
 import { ChatroomUserModel, ChatMessageModel } from "../models";
+
+const profileController = new ProfileController();
 
 export class ChatService {
 	async createChatroom(uuid1: string, uuid2: string) {
@@ -105,5 +108,19 @@ export class ChatService {
 			data: result.message,
 			time: result.created_at.toISOString(),
 		};
+	}
+
+	async getOpponent(chatroomID: number, cuid: number) {
+		const opponent = await db.chatroomUser.findFirst({
+			where: {
+				crid: chatroomID,
+				cuid: {
+					not: cuid,
+				},
+			},
+		});
+		if (opponent === null) throw new Error("Opponent not found");
+
+		return await profileController.getProfile(opponent.uuid);
 	}
 }

@@ -32,6 +32,17 @@ const chatSocketRoutes = new Elysia({
 			const result = await chatController.joinChat(ws.id);
 			if (result.crid !== undefined) {
 				ws.subscribe(result.crid.toString());
+
+				const opponent = await chatController.getOpponent(
+					result.crid,
+					ws.id
+				);
+				ws.send({
+					status: true,
+					type: "chat",
+					data: "Chatroom is opened",
+					opponent: opponent,
+				});
 			} else {
 				ws.send(result);
 				ws.close();

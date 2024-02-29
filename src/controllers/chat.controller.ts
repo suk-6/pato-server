@@ -50,4 +50,17 @@ export class ChatController {
 
 		return await chatService.sendMessage(chatMessage);
 	}
+
+	async getOpponent(chatroomID: number, uuid: string) {
+		const chatroomUser = await chatService.getChatroomUser(uuid);
+		if (chatroomUser === null) throw new Error("Chatroom user not found");
+
+		const opponent = await chatService.getOpponent(
+			chatroomID,
+			chatroomUser.cuid
+		);
+		if (opponent === null) throw new Error("Opponent not found");
+
+		return opponent;
+	}
 }

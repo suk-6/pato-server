@@ -60,7 +60,7 @@ export interface JWTPayloadModel {
 // Profile
 // profile.routes.ts
 export interface ProfileModel {
-	uuid: string;
+	uuid: string; // rejected
 	image: string | undefined;
 	nickname: string;
 	region: string;
