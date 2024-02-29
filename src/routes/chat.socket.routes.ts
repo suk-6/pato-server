@@ -41,7 +41,10 @@ const chatSocketRoutes = new Elysia({
 					status: true,
 					type: "information",
 					data: "Chatroom is opened",
-					opponent: opponent,
+					opponent: {
+						nickname: opponent.nickname,
+						image: opponent.image,
+					},
 				});
 			} else {
 				ws.send(result);
