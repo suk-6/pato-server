@@ -1,6 +1,6 @@
 import db from "../db";
-import { ProfileModel } from "../models";
 import { regions } from "../regions";
+import { ProfileModel } from "../models";
 
 export class ProfileService {
 	async saveProfile(profile: ProfileModel) {

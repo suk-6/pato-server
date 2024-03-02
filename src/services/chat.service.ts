@@ -1,6 +1,6 @@
 import db from "../db";
-import { ProfileController } from "../controllers/profile.controller";
 import { ChatroomUserModel, ChatMessageModel } from "../models";
+import { ProfileController } from "../controllers/profile.controller";
 
 const profileController = new ProfileController();
 

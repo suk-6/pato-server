@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia";
-import { AuthController } from "../controllers/auth.controller";
 import jwt from "@elysiajs/jwt";
+import { AuthController } from "../controllers/auth.controller";
 
 const authController = new AuthController();
 

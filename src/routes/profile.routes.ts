@@ -1,9 +1,9 @@
 import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
 import bearer from "@elysiajs/bearer";
+import { JWTPayloadModel, ProfileModel } from "../models";
 import { AuthController } from "../controllers/auth.controller";
 import { ProfileController } from "../controllers/profile.controller";
-import { JWTPayloadModel, ProfileModel } from "../models";
 
 const profileController = new ProfileController();
 const authController = new AuthController();

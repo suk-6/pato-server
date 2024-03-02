@@ -1,16 +1,16 @@
-import { ProfileService } from "./profile.service";
 import { redis } from "../redis";
 import { base64encode } from "../base64";
+import { ProfileController } from "../controllers/profile.controller";
 import { ChatController } from "../controllers/chat.controller";
 import { AuthController } from "../controllers/auth.controller";
 
-const profileService = new ProfileService();
+const profileController = new ProfileController();
 const chatController = new ChatController();
 const authController = new AuthController();
 
 export class MatchingService {
 	async startMatching(uuid: string) {
-		const profile = await profileService.getUserProfile(uuid);
+		const profile = await profileController.getProfile(uuid, false);
 		if (profile === null) throw new Error("Profile not found");
 
 		let region = profile.region;
@@ -80,7 +80,7 @@ export class MatchingService {
 	}
 
 	async cancelMatching(uuid: string) {
-		const profile = await profileService.getUserProfile(uuid);
+		const profile = await profileController.getProfile(uuid, false);
 		if (profile === null)
 			return { status: false, message: "Profile not found" };
 

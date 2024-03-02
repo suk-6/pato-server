@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
-import { ChatController } from "../controllers/chat.controller";
 import { JWTPayloadModel } from "../models";
+import { ChatController } from "../controllers/chat.controller";
 
 const chatController = new ChatController();
 

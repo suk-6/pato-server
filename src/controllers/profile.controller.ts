@@ -23,7 +23,7 @@ export class ProfileController {
 		return profileService.validateRegion(region);
 	}
 
-	async getProfile(uuid: string) {
+	async getProfile(uuid: string, filtered: boolean = true) {
 		const profile = await profileService.getUserProfile(uuid);
 		if (profile === null) throw new Error("Profile not found");
 
@@ -32,7 +32,7 @@ export class ProfileController {
 		else image = profile.image;
 
 		const result: ProfileModel = {
-			uuid: "rejected",
+			uuid: filtered ? "rejected" : profile.uuid,
 			image: image,
 			nickname: profile.nickname,
 			region: profile.region,
