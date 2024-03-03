@@ -29,6 +29,7 @@ const matchingSocketRoutes = new Elysia({
 
 			ws.id = (payload as unknown as JWTPayloadModel).uuid;
 			const result = await matchingController.waitingSocket(ws.id);
+			await new Promise((r) => setTimeout(r, 500));
 			console.log("ws logging: ", result);
 			ws.send(result);
 			ws.close();
