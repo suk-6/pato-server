@@ -69,14 +69,14 @@ export class MatchingService {
 			if (await redis.exists(key)) break;
 			await new Promise((r) => setTimeout(r, 2000));
 		}
-		redis.del(key).then((d) => console.log("waitingSocket del: ", d));
+		redis.del(key);
 
 		return { status: true };
 	}
 
 	async endWaiting(uuid: string) {
 		const key = `isMatched:${uuid}`;
-		redis.set(key, 1).then((d) => console.log("endWaiting: ", d));
+		redis.set(key, 1);
 	}
 
 	async cancelMatching(uuid: string) {
