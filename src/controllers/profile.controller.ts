@@ -27,13 +27,9 @@ export class ProfileController {
 		const profile = await profileService.getUserProfile(uuid);
 		if (profile === null) throw new Error("Profile not found");
 
-		let image;
-		if (profile.image === null) image = undefined;
-		else image = profile.image;
-
 		const result: ProfileModel = {
 			uuid: filtered ? "rejected" : profile.uuid,
-			image: image,
+			image: profile.image === null ? undefined : profile.image,
 			nickname: profile.nickname,
 			region: profile.region,
 			alcohol: parseFloat(profile.alcohol.toString()),
