@@ -20,9 +20,11 @@ export class MatchingService {
 		if (!(await redis.exists(`waitingRegion:${region}`))) {
 			const result = await this.appendUser(region, uuid);
 
-			authController.adminCheck(uuid).then((isAdmin) => {
-				if (isAdmin) console.log(profile, result);
-			});
+			authController
+				.adminCheck(uuid)
+				.then((isAdmin) =>
+					isAdmin ? console.log(profile, result) : null
+				);
 
 			return {
 				status: "waiting",
