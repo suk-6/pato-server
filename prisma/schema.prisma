@@ -49,6 +49,7 @@ model Chatroom {
   updated_at   DateTime       @updatedAt
   ChatroomUser ChatroomUser[]
   Chat         Chat[]
+  Promise      Promise[]
 }
 
 model ChatroomUser {
@@ -74,4 +75,14 @@ model Chat {
   type         Int          @default(0) // 0: text, 1: image
   created_at   DateTime     @default(now())
   updated_at   DateTime     @updatedAt
+}
+
+model Promise {
+  pid        Int      @id @default(autoincrement()) // Promise ID
+  crid       Int
+  Chatroom   Chatroom @relation(fields: [crid], references: [crid])
+  date       DateTime
+  place      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
