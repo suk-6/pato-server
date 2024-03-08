@@ -27,6 +27,7 @@ model User {
   UserProfile   UserProfile[]
   ChatroomUser  ChatroomUser[]
   Chat          Chat[]
+  PromiseUser   PromiseUser[]
 }
 
 model UserProfile {
@@ -78,11 +79,22 @@ model Chat {
 }
 
 model Promise {
-  pid        Int      @id @default(autoincrement()) // Promise ID
-  crid       Int
-  Chatroom   Chatroom @relation(fields: [crid], references: [crid])
-  date       DateTime
-  place      String
+  pid         Int           @id @default(autoincrement()) // Promise ID
+  crid        Int
+  Chatroom    Chatroom      @relation(fields: [crid], references: [crid])
+  date        DateTime
+  place       String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  PromiseUser PromiseUser[]
+}
+
+model PromiseUser {
+  puid       Int      @id @default(autoincrement()) // Promise User ID
+  pid        Int
+  uuid       String
+  Promise    Promise  @relation(fields: [pid], references: [pid])
+  user       User     @relation(fields: [uuid], references: [uuid])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
