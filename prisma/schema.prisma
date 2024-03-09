@@ -25,8 +25,8 @@ model User {
   created_at    DateTime       @default(now())
   updated_at    DateTime       @updatedAt
   UserProfile   UserProfile[]
-  ChatroomUser  ChatroomUser[]
   Chat          Chat[]
+  ChatroomUser  ChatroomUser[]
   PromiseUser   PromiseUser[]
 }
 
@@ -41,6 +41,20 @@ model UserProfile {
   hobby      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model Chat {
+  cid          Int          @id @default(autoincrement()) // Chat ID
+  crid         Int
+  cuid         Int
+  uuid         String
+  Chatroom     Chatroom     @relation(fields: [crid], references: [crid])
+  Chatroomuser ChatroomUser @relation(fields: [cuid], references: [cuid])
+  user         User         @relation(fields: [uuid], references: [uuid])
+  message      String
+  type         Int          @default(0) // 0: text, 1: image
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
 }
 
 model Chatroom {
@@ -62,20 +76,6 @@ model ChatroomUser {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   Chat       Chat[]
-}
-
-model Chat {
-  cid          Int          @id @default(autoincrement()) // Chat ID
-  crid         Int
-  cuid         Int
-  uuid         String
-  Chatroom     Chatroom     @relation(fields: [crid], references: [crid])
-  Chatroomuser ChatroomUser @relation(fields: [cuid], references: [cuid])
-  user         User         @relation(fields: [uuid], references: [uuid])
-  message      String
-  type         Int          @default(0) // 0: text, 1: image
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
 }
 
 model Promise {
